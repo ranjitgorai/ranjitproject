@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+</head>
+<body>
+<br>
+<div class="container">
+  <div class="col-sm-10 well well-lg" style="background-color:#0000FF;">
+  <div class=" form-inline form-group" align="center">
+     <label class="col-sm-8 control-label"><font color="white" >Simplify Your Links</font>
+      <input type="text" class="form-control" placeholder="Your original URL here.. " aria-describedby="basic-addon2" style="width:300px;" id="url">
+      <button type="button" class="btn btn-default" id="short_btn"><font color="#3498DB ">SHORTEN URL</font></button>
+     </label>
+  </div>
+  </div>
+
+  <div class="col-sm-2  well well-sm">
+   <h4><u>Shorten URL</u></h4>
+   <p id="demo"></p>
+   </div>
+</div><!--end container-->
+
+<script type="text/javascript">
+   $('#short_btn').click(function(e){
+            e.preventDefault();
+              var url = {
+                original_url : $('#url').val(),
+              };
+            
+         // console.log(url);
+          $.ajax({
+
+            url : '/shortproject',
+            type: 'post',
+            data : url,
+            success : function(result){          
+                  if(!result.error)
+                    {
+                      //alert("successfully submitted");
+                      $('#demo').html(result.result);
+                    }
+                    else{
+                      alert("error");
+                    }
+            }
+          });   
+      });
+</script>
+
+
+
+
+</body>
+</html>
