@@ -38,15 +38,20 @@ router.post('/shortproject', function (req,res,next){
 router.get('/:url', function(req, res, next) {
  Shortproj.findOne({ short_url : req.params.url})
   .exec(function(err,url){
-  	return res.render('list',{url:url})
+  	//return res.render('list',{url:url})  
+  	  // console.log(url.original_url);
+  	 var obj = url.original_url.match('/^https:\/\/|http:\/\//');
+  	 if(obj===null){
+  	 	 return res.redirect('http://'+url.original_url);
+  	 }else{
+  	 	return res.redirect(url.original_url);
+  	 }
+  	
+  	 
   });
 });
 
-//var shorturl = Shortener.generate();
-//console.log(shorturl);
-/*var data = req.body;
-var data1 = {'original_url': data , 'short_url': shorturl};
-console.log(data1);*/
+
 
 
 module.exports = router;
