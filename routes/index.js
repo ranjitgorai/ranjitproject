@@ -15,41 +15,38 @@ router.get('/shortproject',function(req,res,next){
 });
 
 router.post('/shortproject', function (req,res,next){
-	
 
-	var sid = Shortener.generate(req.body.original_url);
-	
+
+	var sid = Shortener.generate();
+  // console.log(sid);
+  // console.log(req.body.original_url);
+var urlR = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+   if(req.body.original_url.match(urlR))
+   {
 	var data = {'original_url' : req.body.original_url, 'short_url' : sid};
-	var shorten = new Shortproj(data);
-	shorten.save(function (err, result){
-		if(err){  
-          return res.json({error: true , reason: err});
+  //console.log(data);
+
+	var shortdata = new Shortproj(data);
+	shortdata.save(function (err, result){
+	 	if(err){
+         return res.json({error: true , reason: err});
         }
-        return res.json({error : false , result : shorten.short_url});
+        return res.json({error : false , sid : sid});
+      });
 
-
-	});
-
-
+  }
 });
 
 
 
-router.get('/:url', function(req, res, next) {
- Shortproj.findOne({ short_url : req.params.url})
-  .exec(function(err,url){
-  	//return res.render('list',{url:url})  
-  	  // console.log(url.original_url);
-  	 var obj = url.original_url.match('/^https:\/\/|http:\/\//');
-  	 if(obj===null){
-  	 	 return res.redirect('http://'+url.original_url);
-  	 }else{
-  	 	return res.redirect(url.original_url);
-  	 }
-  	
-  	 
+router.get('/:findurl', function(req, res, next) {
+Shortproj.findOne({ short_url : req.params.findurl}).exec(function(err,url1){
+
+  	  
+    	 return res.redirect('http://'+url1.original_url);
+
+   });
   });
-});
 
 
 
